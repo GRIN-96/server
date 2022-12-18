@@ -36,7 +36,7 @@ const io = new Server(server, {
 
 // 연결 io 생성
 io.on("connection", (socket) => {
-  console.log(socket.id);
+  // console.log(socket.id);
 
   // 서버에서 받아온 소켓의 값(roon no)을 읽어오는 코드 !
   socket.on("room", (data) => {
