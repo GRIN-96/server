@@ -40,19 +40,56 @@ io.on("connection", (socket) => {
 
   // 서버에서 받아온 소켓의 값(roon no)을 읽어오는 코드 !
   socket.on("room", (data) => {
-    console.log(data);
+    console.log(data, "번방 입장입니다 !");
     // 소켓에게 입력한 데이터값 전달.
     // 같은 룸으로 채팅방 참여
-    socket.join(data);
+    socket.join(data[0]);
+    socket.to(data[0]).emit("in", data[1]);
+    // console.log(io.sockets.adapter.rooms.get(data).size); // 소켓인원체크
+    socket
+      .to(data[0])
+      .emit("clients", io.sockets.adapter.rooms.get(data[0]).size);
+  });
+
+  socket.on("list", (data) => {
+    console.log(data);
   });
 
   // 서버에서 받아온 소켓의 값을 읽어오기 !
   // -> 전달한 메세지 읽어오기
   socket.on("message", (data) => {
-    console.log(data, "dataaa"); //서버에 전달된것 확인
+    // console.log(data, "dataaa"); //서버에 전달된것 확인
     // 받아온 메세지를 읽은 후 바로 보내줌
-    // console.log(data)
+    console.log(data);
     socket.to(data.room).emit("messageReturn", data);
+  });
+
+  socket.on("reported", (data) => {
+    // console.log(data, "dataaa"); //서버에 전달된것 확인
+    // 받아온 메세지를 읽은 후 바로 보내줌
+    socket.to(String(data[1])).emit("reportedGugu", data[0]);
+  });
+
+  // 금기어 추가
+  socket.on("tabooUpdate", (data) => {
+    // console.log(data, "dataaa"); //서버에 전달된것 확인
+    // 받아온 메세지를 읽은 후 바로 보내줌
+    socket.to(String(data[1])).emit("returnTabooUpdate", data[0]);
+  });
+
+  // 금기어 삭제
+  socket.on("tabooDelete", (data) => {
+    // console.log(data, "dataaa"); //서버에 전달된것 확인
+    // 받아온 메세지를 읽은 후 바로 보내줌
+    socket.to(String(data[1])).emit("returnTabooDelete", data[0]);
+  });
+
+  // 채팅방 나가기
+  socket.on("left", (data) => {
+    console.log(data);
+    socket.leave(data[1]);
+    socket.to(String(data[1])).emit("out", data[2]);
+    console.log(`${data[0]}님이 ${data[1]}번 방을 퇴장하셨습니다!`);
   });
 });
 
