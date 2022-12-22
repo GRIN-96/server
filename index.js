@@ -49,14 +49,7 @@ io.on("connection", (socket) => {
     // 같은 룸으로 채팅방 참여
     socket.join(data[0]);
     // console.log(io.sockets.adapter.rooms.get(data[0])); // 소켓인원체크
-<<<<<<< HEAD
     io.to(data[0]).emit("clients", ["add", data[1]]);
-=======
-    io.to(data[0]).emit("clients", [
-      io.sockets.adapter.rooms.get(data[0]).size,
-      data[1],
-    ]);
->>>>>>> 231a986e5743d3ae6d091638cfb1f3f6bf05b773
   });
 
   // 서버에서 받아온 소켓의 값을 읽어오기 !
@@ -97,14 +90,7 @@ io.on("connection", (socket) => {
       socket.to(room).emit("returnRoomClear", data[2]);
       console.log(`${data[0]}님이 ${room}번 방을 퇴장하셨습니다!`);
     } else {
-<<<<<<< HEAD
       io.to(room).emit("out", [data[0], "out"]);
-=======
-      io.to(room).emit("out", [
-        data[0],
-        io.sockets.adapter.rooms.get(room).size,
-      ]);
->>>>>>> 231a986e5743d3ae6d091638cfb1f3f6bf05b773
       console.log(`${data[0]}님이 ${data[1]}번 방을 퇴장하셨습니다!`);
     }
   });
