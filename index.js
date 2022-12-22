@@ -103,8 +103,8 @@ io.on("connection", (socket) => {
 });
 
 // 포트 생성
-const PORT = 9999;
+const PORT = 5000;
 
 server.listen(PORT, () => {
-  console.log("server is running on port : 9999");
+  console.log("server is running on port : 5000");
 });
